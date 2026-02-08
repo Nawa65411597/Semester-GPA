@@ -53,7 +53,7 @@
             Save, FlaskConical, Languages, Calculator as CalcIcon, Globe, 
             Palette, MoreHorizontal, LayoutGrid, Target, CheckCircle2, 
             XCircle, ChevronDown, ChevronUp, Calendar, HeartPulse, 
-            Briefcase, FileSpreadsheet, Printer 
+            Briefcase, FileSpreadsheet, Printer, Copyright
         } from 'lucide-react';
 
         function App() {
@@ -181,12 +181,13 @@
 
             const handleAddSubject = (e) => {
                 e.preventDefault();
-                if (!newSubject.name || !newSubject.credit) return;
+                // Validates only credit, name is optional
+                if (!newSubject.credit) return;
 
                 const subject = {
                     id: Date.now(),
                     term: newSubject.term,
-                    name: newSubject.name,
+                    name: newSubject.name || '-', // Default dash if empty
                     credit: parseFloat(newSubject.credit),
                     grade: newSubject.grade,
                     category: newSubject.category
@@ -253,7 +254,7 @@
             const displayedTerms = Object.keys(subjectsByTerm).sort((a, b) => a.localeCompare(b));
 
             return (
-                <div className="max-w-7xl mx-auto space-y-6 p-4 md:p-8">
+                <div className="max-w-7xl mx-auto space-y-6 p-4 md:p-8 flex flex-col min-h-screen">
                     
                     {/* Official Header */}
                     <header className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden no-print">
@@ -325,7 +326,7 @@
                         </div>
                     </header>
 
-                    <div className="grid lg:grid-cols-12 gap-6 items-start">
+                    <div className="grid lg:grid-cols-12 gap-6 items-start flex-1">
                         
                         {/* LEFT SIDE: Settings & Inputs */}
                         <div className="lg:col-span-4 space-y-6 no-print">
@@ -353,11 +354,11 @@
                                     </select>
                                     <input
                                         type="text"
-                                        placeholder="ชื่อวิชา"
+                                        placeholder="ชื่อวิชา (ไม่ระบุก็ได้)"
                                         value={newSubject.name}
                                         onChange={(e) => setNewSubject({...newSubject, name: e.target.value})}
                                         className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm outline-none focus:border-blue-500"
-                                        
+                                        // required removed
                                     />
                                     <div className="grid grid-cols-2 gap-2">
                                         <input
@@ -587,6 +588,12 @@
                         </div>
 
                     </div>
+
+                    <footer className="mt-8 text-center text-slate-400 text-xs py-4 no-print border-t border-slate-200">
+                        <div className="flex items-center justify-center gap-1">
+                            <Copyright size={12} /> Nawarat K. 2025 - All Rights Reserved
+                        </div>
+                    </footer>
                 </div>
             );
         }
